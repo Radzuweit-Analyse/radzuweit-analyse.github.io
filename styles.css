@@ -5,13 +5,14 @@ body {
     background-color: #f4f4f4;
 }
 
-h1 {
-    color: #333;
+header {
+    background-color: #222;
+    padding: 1rem 0;
     text-align: center;
-    margin-top: 2rem;
+    color: #fff;
 }
 
-p {
+main {
+    padding: 2rem;
     text-align: center;
-    margin-top: 1rem;
 }
