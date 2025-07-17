@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   output: 'export',
-  trailingSlash: true,
-};
+  images: {
+    unoptimized: true
+  },
+  basePath: '/radzuweit-analyse.github.io/radzuweit-analyse',
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
