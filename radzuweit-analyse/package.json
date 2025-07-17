@@ -1,0 +1,22 @@
+{
+  "name": "radzuweit-analyse.github.io",
+  "version": "1.0.0",
+  "description": "Radzuweit Analyse Official Website",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build && next export",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.1.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "framer-motion": "11.1.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.3.3"
+  }
+}
