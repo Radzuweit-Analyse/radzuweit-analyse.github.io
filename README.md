@@ -1,1 +1,4 @@
-# radzuweit-analyse.github.io
+# Website
+## Usage
+
+Open `index.html` in a web browser to view the site.
