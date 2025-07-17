@@ -1,0 +1,12 @@
+{
+  "name": "radzuweit-analyse.github.io",
+  "version": "1.0.0",
+  "description": "Radzuweit Analyse Official Website",
+  "scripts": {
+    "start": "live-server",
+    "test": "echo 'No tests implemented.'"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
