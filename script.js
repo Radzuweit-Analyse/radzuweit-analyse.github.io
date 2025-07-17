@@ -1,1 +1,3 @@
-console.log('Radzuweit Analyse website loaded.');
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Radzuweit Analyse website loaded.');
+});
