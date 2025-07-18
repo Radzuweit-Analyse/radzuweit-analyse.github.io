@@ -1,11 +1,5 @@
-# Build directories
-.next/
-source/.next/
-out/
-
-# Node dependencies
-node_modules/
-source/node_modules/
-
-# System files
+.next
+node_modules
 .DS_Store
+app
+components
