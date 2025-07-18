@@ -10,6 +10,7 @@ export default function Footer() {
         <Link href="/blog" className="hover:underline">Blog</Link>
         <Link href="/contact" className="hover:underline">Contact</Link>
       </nav>
+      <a href="https://www.linkedin.com/in/raphaël-radzuweit/" className="hover:underline">LinkedIn</a>
       <p className="text-gray-500">© {new Date().getFullYear()} Independent Consultant.</p>
     </footer>
   );

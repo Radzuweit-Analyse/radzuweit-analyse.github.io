@@ -1,4 +1,4 @@
-import ContactForm from '../../components/ContactForm';
+import ContactForm from '../components/ContactForm';
 
 export const metadata = {
   title: 'Contact - Independent Consultant',
