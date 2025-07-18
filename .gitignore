@@ -4,6 +4,3 @@ source/out/
 
 # Node dependencies
 source/node_modules/
-
-# System files
-.DS_Store
