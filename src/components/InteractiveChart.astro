@@ -1,0 +1,69 @@
+---
+export interface Props {
+  id: string;
+  data: any;
+  layout?: any;
+  config?: any;
+}
+
+const { id, data, layout = {}, config = {} } = Astro.props;
+---
+
+<div id={id} class="plotly-container w-full h-96 rounded-lg shadow-lg bg-white dark:bg-gray-800"></div>
+
+<script define:vars={{ id, data, layout, config }}>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Import Plotly
+    const Plotly = await import('https://cdn.plot.ly/plotly-2.26.0.min.js');
+    
+    // Default layout options
+    const defaultLayout = {
+      paper_bgcolor: 'rgba(0,0,0,0)',
+      plot_bgcolor: 'rgba(0,0,0,0)',
+      font: {
+        family: 'Inter, system-ui, sans-serif',
+        size: 12,
+        color: '#374151'
+      },
+      margin: { t: 50, r: 50, b: 50, l: 50 },
+      ...layout
+    };
+    
+    // Default config options
+    const defaultConfig = {
+      responsive: true,
+      displayModeBar: true,
+      displaylogo: false,
+      modeBarButtonsToRemove: ['pan2d', 'lasso2d', 'select2d'],
+      ...config
+    };
+    
+    // Update colors based on theme
+    const updateTheme = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      const updatedLayout = {
+        ...defaultLayout,
+        font: {
+          ...defaultLayout.font,
+          color: isDark ? '#e5e7eb' : '#374151'
+        },
+        paper_bgcolor: isDark ? '#1f2937' : '#ffffff',
+        plot_bgcolor: isDark ? '#1f2937' : '#ffffff'
+      };
+      
+      Plotly.react(id, data, updatedLayout, defaultConfig);
+    };
+    
+    // Create initial plot
+    Plotly.newPlot(id, data, defaultLayout, defaultConfig);
+    
+    // Listen for theme changes
+    const observer = new MutationObserver(() => updateTheme());
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    
+    // Cleanup
+    window.addEventListener('beforeunload', () => {
+      observer.disconnect();
+    });
+  });
+</script>

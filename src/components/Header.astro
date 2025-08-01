@@ -1,0 +1,98 @@
+---
+import { Menu, X, Moon, Sun } from 'lucide-astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <a href="/" class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">ED</span>
+          </div>
+          <span class="font-semibold text-lg">Dr. Economist</span>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-8">
+          <a href="/" class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPath === '/' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+            Home
+          </a>
+          <a href="/about" class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPath === '/about' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+            About
+          </a>
+          <a href="/articles" class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPath.startsWith('/articles') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+            Articles
+          </a>
+          <a href="/news" class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPath.startsWith('/news') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+            News
+          </a>
+          <a href="/contact" class={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPath === '/contact' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+            Contact
+          </a>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <ThemeToggle />
+        
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
+            <Menu id="menu-icon" size={24} />
+            <X id="close-icon" size={24} class="hidden" />
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="md:hidden hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+        <a href="/" class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPath === '/' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+          Home
+        </a>
+        <a href="/about" class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPath === '/about' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+          About
+        </a>
+        <a href="/articles" class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPath.startsWith('/articles') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+          Articles
+        </a>
+        <a href="/news" class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPath.startsWith('/news') ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+          News
+        </a>
+        <a href="/contact" class={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPath === '/contact' ? 'text-primary-600 bg-primary-50 dark:bg-primary-900/20' : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400'}`}>
+          Contact
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    
+    mobileMenuButton?.addEventListener('click', () => {
+      const isHidden = mobileMenu?.classList.contains('hidden');
+      
+      if (isHidden) {
+        mobileMenu?.classList.remove('hidden');
+        menuIcon?.classList.add('hidden');
+        closeIcon?.classList.remove('hidden');
+      } else {
+        mobileMenu?.classList.add('hidden');
+        menuIcon?.classList.remove('hidden');
+        closeIcon?.classList.add('hidden');
+      }
+    });
+  });
+</script>

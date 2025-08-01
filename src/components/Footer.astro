@@ -1,0 +1,66 @@
+---
+import { Github, Linkedin, Mail, Twitter } from 'lucide-astro';
+---
+
+<footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="col-span-1 md:col-span-2">
+        <div class="flex items-center space-x-2 mb-4">
+          <div class="w-8 h-8 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold text-sm">ED</span>
+          </div>
+          <span class="font-semibold text-lg">Dr. Economist</span>
+        </div>
+        <p class="text-gray-600 dark:text-gray-400 max-w-md">
+          Open-source economist and data scientist passionate about making economic insights accessible through data visualization and analysis.
+        </p>
+        <div class="flex space-x-4 mt-6">
+          <a href="https://github.com/username" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <Github size={24} />
+          </a>
+          <a href="https://linkedin.com/in/username" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <Linkedin size={24} />
+          </a>
+          <a href="https://twitter.com/username" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <Twitter size={24} />
+          </a>
+          <a href="mailto:contact@example.com" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+            <Mail size={24} />
+          </a>
+        </div>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="/about" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About Me</a></li>
+          <li><a href="/articles" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Articles</a></li>
+          <li><a href="/news" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">News & Updates</a></li>
+          <li><a href="/contact" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      
+      <div>
+        <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-4">Research Areas</h3>
+        <ul class="space-y-2">
+          <li class="text-gray-600 dark:text-gray-400">Behavioral Economics</li>
+          <li class="text-gray-600 dark:text-gray-400">Data Visualization</li>
+          <li class="text-gray-600 dark:text-gray-400">Economic Policy</li>
+          <li class="text-gray-600 dark:text-gray-400">Statistical Analysis</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-600 dark:text-gray-400 text-sm">
+          © {new Date().getFullYear()} Dr. Economist. All rights reserved.
+        </p>
+        <p class="text-gray-600 dark:text-gray-400 text-sm mt-2 md:mt-0">
+          Built with <a href="https://astro.build" class="text-primary-600 hover:text-primary-700 dark:hover:text-primary-400">Astro</a> and open source tools.
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
