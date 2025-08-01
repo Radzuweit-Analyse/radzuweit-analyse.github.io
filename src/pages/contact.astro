@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { Mail, Phone, MapPin, Send } from 'lucide-astro';
+---
+
+<Layout title="Contact - Dr. Economist" description="Get in touch for collaboration, speaking engagements, or research inquiries.">
+  <Header />
+  
+  <main class="py-16 bg-white dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          Get In Touch
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          I'm always interested in collaborating on research projects, speaking at events, or discussing economic insights. Feel free to reach out!
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Send a Message</h2>
+          <form class="space-y-6" netlify>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  First Name *
+                </label>
+                <input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
+                  placeholder="John"
+                />
+              </div>
+              <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Last Name *
+                </label>
+                <input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  required
+                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
+                  placeholder="Doe"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Email Address *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
+                placeholder="john.doe@example.com"
+              />
+            </div>
+            
+            <div>
+              <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Subject *
+              </label>
+              <select
+                id="subject"
+                name="subject"
+                required
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors"
+              >
+                <option value="">Select a subject</option>
+                <option value="collaboration">Research Collaboration</option>
+                <option value="speaking">Speaking Engagement</option>
+                <option value="media">Media Inquiry</option>
+                <option value="consulting">Consulting</option>
+                <option value="general">General Question</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="6"
+                required
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-colors resize-vertical"
+                placeholder="Tell me about your project or inquiry..."
+              ></textarea>
+            </div>
+            
+            <button
+              type="submit"
+              class="w-full flex items-center justify-center px-6 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors shadow-lg hover:shadow-xl"
+            >
+              <Send size={20} class="mr-2" />
+              Send Message
+            </button>
+          </form>
+        </div>
+        
+        <!-- Contact Information -->
+        <div class="space-y-8">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Contact Information</h2>
+            <div class="space-y-6">
+              <div class="flex items-start">
+                <div class="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+                  <Mail size={24} class="text-primary-600" />
+                </div>
+                <div class="ml-4">
+                  <h3 class="font-semibold text-gray-900 dark:text-gray-100">Email</h3>
+                  <p class="text-gray-600 dark:text-gray-300">contact@example.com</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">I typically respond within 24 hours</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex-shrink-0 w-12 h-12 bg-secondary-100 dark:bg-secondary-900/20 rounded-lg flex items-center justify-center">
+                  <Phone size={24} class="text-secondary-600" />
+                </div>
+                <div class="ml-4">
+                  <h3 class="font-semibold text-gray-900 dark:text-gray-100">Phone</h3>
+                  <p class="text-gray-600 dark:text-gray-300">+1 (555) 123-4567</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Available Mon-Fri, 9am-5pm EST</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="flex-shrink-0 w-12 h-12 bg-accent-100 dark:bg-accent-900/20 rounded-lg flex items-center justify-center">
+                  <MapPin size={24} class="text-accent-600" />
+                </div>
+                <div class="ml-4">
+                  <h3 class="font-semibold text-gray-900 dark:text-gray-100">Location</h3>
+                  <p class="text-gray-600 dark:text-gray-300">Washington, DC</p>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Available for local meetings</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Areas of Interest -->
+          <div>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Areas of Interest</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                <h4 class="font-medium text-gray-900 dark:text-gray-100 text-sm">Research Collaboration</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Joint studies & papers</p>
+              </div>
+              <div class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                <h4 class="font-medium text-gray-900 dark:text-gray-100 text-sm">Speaking Engagements</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Conferences & events</p>
+              </div>
+              <div class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                <h4 class="font-medium text-gray-900 dark:text-gray-100 text-sm">Media Interviews</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Press & podcasts</p>
+              </div>
+              <div class="bg-white dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
+                <h4 class="font-medium text-gray-900 dark:text-gray-100 text-sm">Consulting</h4>
+                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1">Economic advisory</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Response Time -->
+          <div class="bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-gray-700 dark:to-gray-600 rounded-xl p-6">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Response Time</h3>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">
+              I strive to respond to all inquiries within 24 hours during business days. For urgent matters, please indicate so in your subject line.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
