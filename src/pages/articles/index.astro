@@ -1,0 +1,199 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { Calendar, Tag, User } from 'lucide-astro';
+
+const articles = await getCollection('articles');
+const publishedArticles = articles
+  .filter(article => !article.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featuredArticles = publishedArticles.filter(article => article.data.featured);
+const allTags = [...new Set(publishedArticles.flatMap(article => article.data.tags))];
+---
+
+<Layout title="Articles & Analysis - Dr. Economist" description="In-depth economic analysis, research papers, and data-driven insights.">
+  <Header />
+  
+  <main class="py-16 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          Articles & Analysis
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Deep-dive analysis on economic trends, policy implications, and data-driven insights. Each article includes interactive visualizations and reproducible research.
+        </p>
+      </div>
+      
+      <!-- Featured Articles -->
+      {featuredArticles.length > 0 && (
+        <section class="mb-16">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8">Featured Analysis</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {featuredArticles.slice(0, 2).map(article => (
+              <article class="bg-gradient-to-br from-primary-50 to-secondary-50 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8 hover:shadow-xl transition-shadow">
+                <div class="flex items-center mb-4">
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary-100 dark:bg-primary-900/20 text-primary-800 dark:text-primary-300">
+                    Featured
+                  </span>
+                  <div class="flex items-center ml-4 text-sm text-gray-600 dark:text-gray-300">
+                    <Calendar size={16} class="mr-1" />
+                    {article.data.pubDate.toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+                  <a href={`/articles/${article.slug}`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                    {article.data.title}
+                  </a>
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+                  {article.data.description}
+                </p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {article.data.tags.slice(0, 3).map(tag => (
+                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-white dark:bg-gray-600 text-gray-700 dark:text-gray-200">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                    <User size={16} class="mr-1" />
+                    {article.data.author}
+                  </div>
+                  <a href={`/articles/${article.slug}`} class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                    Read Analysis →
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+      
+      <!-- Filter Tags -->
+      <section class="mb-12">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Filter by Topic</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="filter-tag active px-4 py-2 bg-primary-600 text-white rounded-full text-sm font-medium hover:bg-primary-700 transition-colors" data-filter="all">
+            All Articles
+          </button>
+          {allTags.map(tag => (
+            <button class="filter-tag px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" data-filter={tag}>
+              {tag}
+            </button>
+          ))}
+        </div>
+      </section>
+      
+      <!-- Articles Grid -->
+      <section>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="articles-grid">
+          {publishedArticles.map(article => (
+            <article class="article-card bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow overflow-hidden" data-tags={article.data.tags.join(',')}>
+              {article.data.heroImage && (
+                <div class="aspect-video bg-gray-200 dark:bg-gray-700">
+                  <img src={article.data.heroImage} alt={article.data.title} class="w-full h-full object-cover" />
+                </div>
+              )}
+              <div class="p-6">
+                <div class="flex items-center mb-3">
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                    <Calendar size={16} class="mr-1" />
+                    {article.data.pubDate.toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
+                  <a href={`/articles/${article.slug}`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                    {article.data.title}
+                  </a>
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">
+                  {article.data.description}
+                </p>
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {article.data.tags.slice(0, 3).map(tag => (
+                    <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                      <Tag size={12} class="mr-1" />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                    <User size={16} class="mr-1" />
+                    {article.data.author}
+                  </div>
+                  <a href={`/articles/${article.slug}`} class="font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 text-sm">
+                    Read More →
+                  </a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const articleCards = document.querySelectorAll('.article-card');
+    
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        const filter = tag.getAttribute('data-filter');
+        
+        // Update active state
+        filterTags.forEach(t => t.classList.remove('active', 'bg-primary-600', 'text-white'));
+        filterTags.forEach(t => t.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300'));
+        
+        tag.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+        tag.classList.add('active', 'bg-primary-600', 'text-white');
+        
+        // Filter articles
+        articleCards.forEach(card => {
+          const cardTags = card.getAttribute('data-tags').split(',');
+          
+          if (filter === 'all' || cardTags.includes(filter)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>

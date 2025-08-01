@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { Calendar, Tag } from 'lucide-astro';
+
+const news = await getCollection('news');
+const publishedNews = news
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const allTags = [...new Set(publishedNews.flatMap(post => post.data.tags))];
+---
+
+<Layout title="News & Updates - Dr. Economist" description="Latest updates, quick thoughts, and announcements from Dr. Economist.">
+  <Header />
+  
+  <main class="py-16 bg-white dark:bg-gray-900">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          News & Updates
+        </h1>
+        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Stay updated with my latest thoughts, research updates, speaking engagements, and quick takes on current economic events.
+        </p>
+      </div>
+      
+      <!-- Filter Tags -->
+      <section class="mb-12">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Filter by Topic</h3>
+        <div class="flex flex-wrap gap-2">
+          <button class="filter-tag active px-4 py-2 bg-primary-600 text-white rounded-full text-sm font-medium hover:bg-primary-700 transition-colors" data-filter="all">
+            All Updates
+          </button>
+          {allTags.map(tag => (
+            <button class="filter-tag px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors" data-filter={tag}>
+              {tag}
+            </button>
+          ))}
+        </div>
+      </section>
+      
+      <!-- News Grid -->
+      <section>
+        <div class="space-y-8" id="news-grid">
+          {publishedNews.map(post => (
+            <article class="news-card bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow p-8" data-tags={post.data.tags.join(',')}>
+              <div class="flex items-center mb-4">
+                <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                  <Calendar size={16} class="mr-1" />
+                  {post.data.pubDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </div>
+              </div>
+              
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                <a href={`/news/${post.slug}`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+                  {post.data.title}
+                </a>
+              </h2>
+              
+              <p class="text-gray-600 dark:text-gray-300 text-lg leading-relaxed mb-6">
+                {post.data.description}
+              </p>
+              
+              <div class="flex flex-wrap gap-2 mb-6">
+                {post.data.tags.map(tag => (
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                    <Tag size={14} class="mr-1" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              
+              <a href={`/news/${post.slug}`} class="inline-flex items-center font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">
+                Read More →
+              </a>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+  
+  <Footer />
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterTags = document.querySelectorAll('.filter-tag');
+    const newsCards = document.querySelectorAll('.news-card');
+    
+    filterTags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        const filter = tag.getAttribute('data-filter');
+        
+        // Update active state
+        filterTags.forEach(t => t.classList.remove('active', 'bg-primary-600', 'text-white'));
+        filterTags.forEach(t => t.classList.add('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300'));
+        
+        tag.classList.remove('bg-gray-100', 'dark:bg-gray-800', 'text-gray-700', 'dark:text-gray-300');
+        tag.classList.add('active', 'bg-primary-600', 'text-white');
+        
+        // Filter news
+        newsCards.forEach(card => {
+          const cardTags = card.getAttribute('data-tags').split(',');
+          
+          if (filter === 'all' || cardTags.includes(filter)) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
