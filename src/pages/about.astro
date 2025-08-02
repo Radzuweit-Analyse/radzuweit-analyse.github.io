@@ -124,7 +124,7 @@ import ProtectedMailButton from '../components/ProtectedMailButton.astro';
             <ExternalLink size={16} class="text-gray-400 ml-auto" />
           </a>
 
-          <a href={"mailto:" + import.meta.env.PRIVATE_EMAIL} class="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <ProtectedMailButton email={import.meta.env.PRIVATE_EMAIL ?? ''} class="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Mail size={24} class="text-gray-700 dark:text-gray-300 mr-3" />
             <div>
               <p class="font-medium text-gray-900 dark:text-gray-100">Email</p>
