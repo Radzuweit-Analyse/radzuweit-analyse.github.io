@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { Github, Linkedin, Mail, Download, ExternalLink } from 'lucide-astro';
+import ProtectedMailButton from '../components/ProtectedMailButton.astro';
 ---
 
 <Layout title="About Me - Raphaël Radzuweit" description="Learn about my background in economics, data science, and public policy research.">
@@ -123,13 +124,13 @@ import { Github, Linkedin, Mail, Download, ExternalLink } from 'lucide-astro';
             <ExternalLink size={16} class="text-gray-400 ml-auto" />
           </a>
 
-          <a href="mailto:radzuweitanalyse@protonmail.com" class="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+          <ProtectedMailButton email={import.meta.env.PRIVATE_EMAIL ?? ''} class="flex items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <Mail size={24} class="text-gray-700 dark:text-gray-300 mr-3" />
             <div>
               <p class="font-medium text-gray-900 dark:text-gray-100">Email</p>
               <p class="text-sm text-gray-600 dark:text-gray-400">Get in touch</p>
             </div>
-          </a>
+          </ProtectedMailButton>
         </div>
       </section>
 
