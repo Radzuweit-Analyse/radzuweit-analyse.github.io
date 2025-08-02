@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://your-username.github.io',
+  site: 'https://radzuweit-analyse.github.io',
   integrations: [
     tailwind(),
     sitemap()
