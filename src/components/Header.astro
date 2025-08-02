@@ -1,6 +1,7 @@
 ---
 import { Menu, X, Moon, Sun } from 'lucide-astro';
 import ThemeToggle from './ThemeToggle.astro';
+import ProtectedMailButton from './ProtectedMailButton.astro';
 
 const currentPath = Astro.url.pathname;
 ---
@@ -37,10 +38,19 @@ const currentPath = Astro.url.pathname;
       
       <div class="flex items-center space-x-4">
         <ThemeToggle />
-        
+        <ProtectedMailButton
+          email={import.meta.env.PRIVATE_EMAIL ?? ''}
+          class="inline-flex items-center px-3 py-2 bg-primary-600 text-white text-sm font-medium rounded-md hover:bg-primary-700 transition-colors"
+        >
+          Contact me
+        </ProtectedMailButton>
+
         <!-- Mobile menu button -->
         <div class="md:hidden">
-          <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
+          <button
+            id="mobile-menu-button"
+            class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
+          >
             <Menu id="menu-icon" size={24} />
             <X id="close-icon" size={24} class="hidden" />
           </button>
