@@ -8,7 +8,7 @@ const articles = defineCollection({
     author: z.string().default('Raphaël Radzuweit'),
     pubDate: z.date(),
     updatedDate: z.date().optional(),
-    readingTimeInMinutes: z.int(),
+    readingTimeInMinutes: z.number(),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
