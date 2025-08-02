@@ -131,7 +131,7 @@ import RevealContact from '../components/RevealContact.astro';
                   <h3 class="font-semibold text-gray-900 dark:text-gray-100">Email</h3>
                   <RevealContact
                     type="email"
-                    contact="raphael.radzuweit@protonmail.com"
+                    contact={import.meta.env.PUBLIC_EMAIL ?? ''}
                     label="Show email"
                     className="text-gray-600 dark:text-gray-300 underline"
                   />
@@ -147,7 +147,7 @@ import RevealContact from '../components/RevealContact.astro';
                   <h3 class="font-semibold text-gray-900 dark:text-gray-100">Phone</h3>
                   <RevealContact
                     type="phone"
-                    contact="+41 79 909 78 59"
+                    contact={import.meta.env.PUBLIC_PHONE ?? ''}
                     label="Show phone number"
                     className="text-gray-600 dark:text-gray-300 underline"
                   />
