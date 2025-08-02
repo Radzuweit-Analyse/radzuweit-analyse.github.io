@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { Github, Linkedin, Mail, Download, ExternalLink } from 'lucide-astro';
 import ProtectedMailButton from '../components/ProtectedMailButton.astro';
+import ProtectedDownloadButton from '../components/ProtectedDownloadButton.astro';
 ---
 
 <Layout title="About Me - Raphaël Radzuweit" description="Learn about my background in economics, data science, and public policy research.">
@@ -132,14 +133,6 @@ import ProtectedMailButton from '../components/ProtectedMailButton.astro';
             </div>
           </ProtectedMailButton>
         </div>
-      </section>
-
-      <!-- CV Download -->
-      <section class="text-center mb-16">
-        <a href="/cv.pdf" download class="inline-flex items-center px-8 py-3 bg-primary-600 text-white font-medium rounded-lg hover:bg-primary-700 transition-colors shadow-lg hover:shadow-xl">
-          <Download size={20} class="mr-2" />
-          Download CV (French)
-        </a>
       </section>
     </div>
   </main>

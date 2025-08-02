@@ -1,6 +1,5 @@
 ---
-import { Github, Linkedin, Mail, Twitter } from 'lucide-astro';
-import ProtectedMailButton from './ProtectedMailButton.astro';
+import { Github, Linkedin } from 'lucide-astro';
 ---
 
 <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
@@ -23,9 +22,6 @@ import ProtectedMailButton from './ProtectedMailButton.astro';
           <a href="https://linkedin.com/in/raphaël-radzuweit" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
             <Linkedin size={24} />
           </a>
-          <ProtectedMailButton email={import.meta.env.PRIVATE_EMAIL ?? ''} className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
-            <Mail size={24} />
-          </ProtectedMailButton>
         </div>
       </div>
       
@@ -35,7 +31,6 @@ import ProtectedMailButton from './ProtectedMailButton.astro';
           <li><a href="/about" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">About Me</a></li>
           <li><a href="/articles" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Articles</a></li>
           <li><a href="/news" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">News & Updates</a></li>
-          <li><a href="/contact" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Contact</a></li>
         </ul>
       </div>
       
