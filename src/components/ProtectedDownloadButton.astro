@@ -1,0 +1,40 @@
+---
+interface Props {
+  url: string;
+  className?: string;
+  filename?: string;
+}
+
+const { url, className = '', filename = '' } = Astro.props;
+const id = `download-${Math.random().toString(36).slice(2)}`;
+const idJS = JSON.stringify(id);
+const urlJS = JSON.stringify(url);
+const filenameJS = JSON.stringify(filename);
+---
+
+<button id={id} class={className} type="button">
+  <slot />
+</button>
+
+<script>
+  (function(){
+    const btn = document.getElementById({idJS});
+    const url = {urlJS};
+    const filename = {filenameJS};
+    btn.addEventListener('click', () => {
+      const a = Math.floor(Math.random()*5)+1;
+      const b = Math.floor(Math.random()*5)+1;
+      const answer = prompt(`Please verify you're human: ${a} + ${b} = ?`);
+      if(parseInt(answer,10) === a + b) {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename || '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert('Incorrect answer, please try again.');
+      }
+    });
+  })();
+</script>
