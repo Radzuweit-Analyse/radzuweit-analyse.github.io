@@ -35,26 +35,22 @@ My implementation addresses this need by:
 
 Let \( Y_t \in \mathbb{R}^{p_1 \times p_2} \) denote the matrix of observed costs at time \( t \). We decompose it as:
 
-\[
-Y_t = R F_t C^\top + E_t
-\]
+$$Y_t = R F_t C^\top + E_t$$
 
-- \( R \): \( p_1 \times k_1 \) row loading matrix  
-- \( C \): \( p_2 \times k_2 \) column loading matrix  
-- \( F_t \): \( k_1 \times k_2 \) latent factor matrix  
-- \( E_t \): idiosyncratic noise
+- $R$: $p_1 \cdot k_1$ row loading matrix  
+- $C$: $p_2 \cdot k_2$ column loading matrix  
+- $F_t$: $k_1 \cdot k_2$ latent factor matrix  
+- $E_t$: idiosyncratic noise
 
 ### 2.2 Factor Dynamics
 
 The factor evolution is governed by a Matrix Autoregressive (MAR) process:
 
-\[
-F_t = \sum_{\ell=1}^{P} A_\ell F_{t-\ell} B_\ell^\top + U_t
-\]
+$$F_t = \sum_{\ell=1}^{P} A_\ell F_{t-\ell} B_\ell^\top + U_t$$
 
 where:
-- \( A_\ell, B_\ell \): autoregressive parameter matrices  
-- \( U_t \): innovations with structured covariance
+- $A_\ell$, $B_\ell$: autoregressive parameter matrices  
+- $U_t$: innovations with structured covariance
 
 ### 2.3 Estimation Procedure
 
@@ -63,7 +59,7 @@ We adopt an EM–Kalman smoother approach:
 - **M-step**: Update model parameters via maximum likelihood  
 - **Missing values**: handled via masking and conditional expectations
 
-The approach yields consistent estimates even in large panels as \( p_1, p_2, T \to \infty \).
+The approach yields consistent estimates even in large panels as $p_1$, $p_2$, $T \to \infty$.
 
 ---
 
