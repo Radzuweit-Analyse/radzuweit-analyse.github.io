@@ -131,7 +131,7 @@ import RevealContact from '../components/RevealContact.astro';
                   <h3 class="font-semibold text-gray-900 dark:text-gray-100">Email</h3>
                   <RevealContact
                     type="email"
-                    contact={import.meta.env.PUBLIC_EMAIL ?? ''}
+                    contact={import.meta.env.PRIVATE_EMAIL}
                     label="Show email"
                     className="text-gray-600 dark:text-gray-300 underline"
                   />
