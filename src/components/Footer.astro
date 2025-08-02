@@ -23,7 +23,7 @@ import ProtectedMailButton from './ProtectedMailButton.astro';
           <a href="https://linkedin.com/in/raphaël-radzuweit" class="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
             <Linkedin size={24} />
           </a>
-          <ProtectedMailButton email="raphael.radzuweit@protonmail.com" className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+          <ProtectedMailButton email={import.meta.env.PUBLIC_EMAIL ?? ''} className="text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
             <Mail size={24} />
           </ProtectedMailButton>
         </div>
