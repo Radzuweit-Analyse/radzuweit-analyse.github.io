@@ -102,7 +102,7 @@ const { frontmatter } = Astro.props;
           </p>
         )}
         
-        <div class="bg-gray-75 dark:bg-gray-800 rounded-lg p-6">
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
           <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Share this article</h3>
           <div class="flex space-x-4">
             <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(frontmatter.title)}&url=${encodeURIComponent(Astro.url.toString())}`} 
