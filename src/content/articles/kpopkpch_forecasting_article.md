@@ -3,7 +3,7 @@ title: "Forecasting mandatory health insurance expenditures in Switzerland"
 description: "Using a dynamic matrix factor model to consistently forecast the mandatory health insurance expenditures in Switzerland."
 author: "Raphaël Radzuweit"
 pubDate: 2025-08-01
-readingTime: "5"
+readingTimeInMinutes: 5
 tags: ["forecasting", "econometrics", "health insurance", "public policy"]
 featured: true
 heroImage: "https://images.pexels.com/photos/416779/pexels-photo-416779.jpeg"
