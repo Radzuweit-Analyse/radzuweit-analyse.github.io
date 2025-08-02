@@ -5,69 +5,79 @@ import Footer from '../components/Footer.astro';
 import { Github, Linkedin, Mail, Twitter, Download, ExternalLink } from 'lucide-astro';
 ---
 
-<Layout title="About Me - Raphaël Radzuweit" description="Learn about my background in economics, data science, and open-source research.">
+<Layout title="About Me - Raphaël Radzuweit" description="Learn about my background in economics, data science, and public policy research.">
   <Header />
   
-  <main class="py-16 bg-white dark:bg-gray-900">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Hero Section -->
-      <div class="text-center mb-16">
-        <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
-          ED
-        </div>
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-          About Me
-        </h1>
-        <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-          I am Raphaël Radzuweit, an economist and data scientist with in economic research, statistical analysis, and data visualization. I am passionate about making economic insights accessible through open-source tools and interactive visualizations.
-        </p>
-      </div>
-      
-      <!-- Bio Section -->
-      <section class="mb-16">
-        <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Background</h2>
-        <div class="prose prose-lg dark:prose-dark max-w-none">
-          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            With a Masters of Science in Economics from the University of Lausanne, and practical experience in data science, I bridge the gap between traditional economic theory and modern data science methodologies. My research focuses on economic forecasting, economic policy analysis, and the development of accessible tools for institutions.
-          </p>
-          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-            I currently work as a scientific collaborator at the Federal Office of Public Health in Switzerland, where I supervise the Swiss obligatory health insurances. In my spare time, I contribute to open-source projects and develop resources to make economic concepts more accessible to the general public and institutions.
-          </p>
-        </div>
-      </section>
+        <main class="py-16 bg-white dark:bg-gray-900">
+          <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+              <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
+                RR
+              </div>
+              <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+                About Me
+              </h1>
+              <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                I am Raphaël Radzuweit, an economist and data scientist specializing in applied econometrics, policy modeling, and open-source research. I am driven by a strong belief that rigorous data analysis should support both institutional decision-making and broader social impact.
+              </p>
+            </div>
+            
+            <!-- Bio Section -->
+            <section class="mb-16">
+              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Background</h2>
+              <div class="prose prose-lg dark:prose-dark max-w-none">
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  I hold a Master's degree in Economics from HEC Lausanne and pursued doctoral-level coursework in Data Science at HEC Montréal, where I focused on machine learning and optimization applied to real-world policy questions. My academic and professional journey has centered around combining quantitative methods with social relevance.
+                </p>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  Currently, I work as a scientific collaborator at the Swiss Federal Office of Public Health (FOPH), contributing to the supervision of the Swiss mandatory health insurance system. My work involves statistical modeling for risk equalization, financial oversight of insurers, and the development of centralized, automated tools to modernize public administration.
+                </p>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                  I have previously held roles in ESG-focused investment analysis, teaching econometrics, and open data research. I also actively volunteer in civic and environmental initiatives. Across all roles, my core motivation remains the same: leveraging data and economic reasoning to address social and environmental challenges.
+                </p>
+              </div>
+            </section>
+          </div>
+        </main>
+      </Layout>
+
       
       <!-- Skills Section -->
       <section class="mb-16">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Skills & Expertise</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Economic Research -->
           <div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Economic Research</h3>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Economic & Policy Research</h3>
             <ul class="space-y-2">
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
-                Forecasting
+                Health Economics & Insurance Markets
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
-                Macroeconomic Analysis
+                Risk Adjustment & Solvency Monitoring
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
-                Economic Policy
+                Economic Forecasting & Time Series Analysis
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
-                Financial Markets
+                Policy Evaluation & Regulatory Analysis
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-primary-600 rounded-full mr-3"></div>
-                Econometrics
+                Econometrics (panel data, causal inference)
               </li>
             </ul>
           </div>
-          
+      
+          <!-- Technical Skills -->
           <div>
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Technical Skills</h3>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Data Science & Technical Tools</h3>
             <ul class="space-y-2">
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-secondary-600 rounded-full mr-3"></div>
@@ -75,42 +85,60 @@ import { Github, Linkedin, Mail, Twitter, Download, ExternalLink } from 'lucide-
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-secondary-600 rounded-full mr-3"></div>
-                R (Tidyverse, ggplot2, Shiny)
+                R (Tidyverse, forecast, Shiny, ggplot2)
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-secondary-600 rounded-full mr-3"></div>
-                JavaScript (D3.js, Plotly, React)
+                SQL & Data Engineering (Azure, ETL workflows)
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-secondary-600 rounded-full mr-3"></div>
-                SQL & Database Management
+                LaTeX, VBA, Bloomberg Terminal, Excel
               </li>
               <li class="flex items-center text-gray-600 dark:text-gray-300">
                 <div class="w-2 h-2 bg-secondary-600 rounded-full mr-3"></div>
-                Machine Learning & AI
+                Data Visualization (Dashboards, Reports, ggplot2)
               </li>
             </ul>
           </div>
         </div>
       </section>
+
       
       <!-- Education -->
       <section class="mb-16">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">Education</h2>
-          
+      
+        <div class="space-y-6">
           <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Masters of Science in Economics</h3>
-            <p class="text-primary-600 dark:text-primary-400 font-medium">University of Lausanne</p>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">2020 - 2022</p>
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">PhD Coursework in Data Science (non-degree)</h3>
+            <p class="text-primary-600 dark:text-primary-400 font-medium">HEC Montréal / GERAD</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">2023</p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+              Focus on applied machine learning, convex optimization, and quantitative methods in economics. Participated in research seminars and collaborative projects within the GERAD research center.
+            </p>
           </div>
-          
+      
+          <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Master of Science in Economics</h3>
+            <p class="text-primary-600 dark:text-primary-400 font-medium">HEC Lausanne – University of Lausanne</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">2020 – 2022</p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+              Specialization in econometrics, macroeconomic policy, and quantitative data analysis. Gained practical experience in R, Python, and Stata for academic and policy-driven research.
+            </p>
+          </div>
+      
           <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
             <h3 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Bachelor of Science in Economics</h3>
-            <p class="text-primary-600 dark:text-primary-400 font-medium">University of Lausanne</p>
-            <p class="text-gray-600 dark:text-gray-300 text-sm">2017 - 2020</p>
+            <p class="text-primary-600 dark:text-primary-400 font-medium">HEC Lausanne – University of Lausanne</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">2017 – 2020</p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2 text-sm">
+              Built a strong foundation in economic theory, mathematics, statistics, and programming. Early exposure to applied econometrics and data science methodologies.
+            </p>
           </div>
         </div>
       </section>
+
       
       <!-- Contact Links -->
       <section class="mb-16">
