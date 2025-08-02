@@ -12,6 +12,7 @@ export interface Props {
     author: string;
     pubDate: Date;
     updatedDate?: Date;
+    readingTime: string;
     tags: string[];
     heroImage?: string;
     youtubeId?: string;
@@ -19,7 +20,6 @@ export interface Props {
 }
 
 const { frontmatter } = Astro.props;
-const readingTime = Math.ceil(Astro.slots.default?.toString().length / 1000) || 5;
 ---
 
 <Layout title={frontmatter.title} description={frontmatter.description}>
@@ -50,7 +50,7 @@ const readingTime = Math.ceil(Astro.slots.default?.toString().length / 1000) || 
             </div>
             <div class="flex items-center">
               <Clock size={16} class="mr-1" />
-              {readingTime} min read
+              {frontmatter.readingTime} min read
             </div>
           </div>
           

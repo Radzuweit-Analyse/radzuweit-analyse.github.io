@@ -2,7 +2,8 @@
 title: "Forecasting mandatory health insurance expenditures in Switzerland"
 description: "Using a dynamic matrix factor model to consistently forecast the mandatory health insurance expenditures in Switzerland."
 author: "Raphaël Radzuweit"
-pubDate: 2025-08-02
+pubDate: 2025-08-01
+readingTime: "5"
 tags: ["forecasting", "econometrics", "health insurance", "public policy"]
 featured: true
 heroImage: "https://images.pexels.com/photos/416779/pexels-photo-416779.jpeg"
@@ -33,7 +34,7 @@ My implementation addresses this need by:
 
 ### 2.1 Observation Equation
 
-Let \( Y_t \in \mathbb{R}^{p_1 \times p_2} \) denote the matrix of observed costs at time \( t \). We decompose it as:
+Let $Y_t \in \mathbb{R}^{p_1 \cdot p_2}$ denote the matrix of observed costs at time $t$. It is decomposed as:
 
 $$Y_t = R F_t C^\top + E_t$$
 
