@@ -17,6 +17,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PRIVATE_EMAIL: ${{ secrets.PRIVATE_EMAIL }}
+      PRIVATE_PHONE: ${{ secrets.PRIVATE_PHONE }}
+      PUBLIC_WEB3FORMS_ACCESS_KEY: ${{ vars.WEB3FORMS_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
