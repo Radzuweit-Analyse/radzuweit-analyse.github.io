@@ -9,7 +9,7 @@ tags: ["health insurance", "public policy", "cost growth", "economic outlook"]
 
 The latest data from the Swiss Federal Office of Public Health (FOPH), published through its cost monitoring tool [MOKKE](https://www.bag.admin.ch/en/monitoring-of-ongoing-cost-development), shows that mandatory health insurance (AOS) costs increased by **4.9% year-over-year** in the first quarter of 2025.
 
-On average, an insured individual spent **CHF 4,754** on covered services over the past 12 months—**CHF 223 more** than a year earlier.
+On average, an insured individual spent **CHF 4 754** on covered services over the past 12 months, that is **CHF 223 more** than a year earlier.
 
 ### Key Cost Increases
 
