@@ -21,7 +21,7 @@ Mandatory health insurance (OKP) expenditures in Switzerland surpassed CHF 4 7
 
 ## 1. Motivation
 
-Swiss healthcare costs have been increasing steadily—from 12.4% of GDP in 2007 to over 17% by 2017. In the space of the mandatory health insurance, there is a need for an open-source **fine-grained, data-driven models** that can uncover latent cost dynamics at regional and institutional levels.
+Swiss healthcare costs have been increasing steadily from 12.4% of GDP in 2007 to over 17% by 2017. In the space of the mandatory health insurance, there is a need for an open-source **fine-grained, data-driven models** that can uncover latent cost dynamics at regional and institutional levels.
 
 My implementation addresses this need by:
 - Modeling high-dimensional matrices (e.g., canton × provider group × time)
