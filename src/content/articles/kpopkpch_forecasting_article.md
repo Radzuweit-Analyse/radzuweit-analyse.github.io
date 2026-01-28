@@ -17,7 +17,7 @@ heroImage: "https://images.pexels.com/photos/416779/pexels-photo-416779.jpeg"
 
 Mandatory health insurance (OKP) expenditures in Switzerland surpassed CHF 4 700 per person in 2024 and are projected to exceed CHF 5 000 per person by 2026. To support granular, interpretable forecasting at the canton–provider–cohort level, I developed **KPOKPCH**, a Python package implementing a **Dynamic Matrix Factor Model (DMFM)** using Expectation–Maximization and Kalman smoothing techniques. Building on the work of Barigozzi & Trapin (2025), this framework accommodates high-dimensional matrices and missing data, enabling conditional and unconstrained cost forecasting across complex spatiotemporal structures.
 
-The package is available on [GitHub](https://github.com/yourusername/Kostenprognose-OKPCH) and provides tools for forecasting health costs across 26 Swiss cantons and multiple provider groups simultaneously.
+The package is available on [GitHub](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH) and provides tools for forecasting health costs across 26 Swiss cantons and multiple provider groups simultaneously.
 
 ---
 
@@ -174,7 +174,7 @@ Some canton-provider combinations have sparse data (e.g., "Psychothérapeutes" w
 
 ### 4.3 Forecasting Workflow
 
-The forecasting script ([forecast_costs_dmfm.py](Prognose-OKPCH/forecast_costs_dmfm.py)) implements:
+The forecasting script ([forecast_costs_dmfm.py](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH/Prognose-OKPCH/forecast_costs_dmfm.py)) implements:
 
 1. **Data loading and preprocessing**:
    - Load tensor data from CSV
