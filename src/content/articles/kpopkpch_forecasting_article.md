@@ -230,14 +230,12 @@ This provides a sanity check on forecast reasonableness.
 - **Interpretable factors**: Row/column loadings capture canton/provider patterns
 - **Conditional forecasting**: Can fix certain canton-provider combinations and forecast others
 - **Seasonal adjustment**: Native support for quarterly differencing
-- **Open source & reproducible**: Full Python implementation with example scripts
 
 ### Limitations
 
-- **Computational cost**: EM algorithm can be slow for very large tensors
 - **Factor number selection**: Requires choosing $k_1$, $k_2$ via cross-validation or information criteria
 - **Gaussian assumption**: Model assumes normally distributed innovations
-- **No uncertainty quantification yet**: Point forecasts only (bootstrap or Bayesian extensions possible)
+- **No uncertainty quantification yet**: Point forecasts only
 
 ---
 
@@ -245,11 +243,9 @@ This provides a sanity check on forecast reasonableness.
 
 Potential extensions include:
 
-1. **Automatic factor selection**: Implement information criteria (AIC, BIC) for choosing $k_1$, $k_2$
-2. **Uncertainty quantification**: Add bootstrap or Bayesian inference for forecast intervals
-3. **Exogenous regressors**: Extend model to include demographic or economic covariates
-4. **Time-varying parameters**: Allow loadings or dynamics to evolve over time
-5. **Higher-order tensors**: Extend to 3+ dimensional arrays (canton × provider × age group × time)
+1. **Uncertainty quantification**: Forecast intervals
+2. **Exogenous regressors**: Extend model to include demographic or economic covariates
+3. **Choice of $k_1$ and $k_2$**: AIC/BIC criteria, for example
 
 ---
 
@@ -270,16 +266,6 @@ The package is designed for researchers and practitioners working with multi-dim
 - **Yu, J., Wang, H., Ai, M., & Zhang, H. (2022)**. Optimal distributed subsampling for maximum quasi-likelihood estimators with massive data. *Journal of the American Statistical Association*, 117(537), 265–276. [arXiv:2407.05624](https://arxiv.org/abs/2407.05624).
 
 - **Federal Statistical Office (FSO)**. Statistics on mandatory health insurance. [www.bfs.admin.ch](https://www.bfs.admin.ch/)
-
----
-
-## Code Availability
-
-GitHub repository: [https://github.com/yourusername/Kostenprognose-OKPCH](https://github.com/yourusername/Kostenprognose-OKPCH)
-
-Package documentation: See [README.md](README.md) and inline docstrings
-
-Example forecasting script: [forecast_costs_dmfm.py](Prognose-OKPCH/forecast_costs_dmfm.py)
 
 ---
 
