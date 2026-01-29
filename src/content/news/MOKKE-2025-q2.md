@@ -22,11 +22,6 @@ The fastest-growing cost categories were:
 
 ### Year-on-Year Comparison
 
-Compared to Q2 2024, overall per capita health spending rose **CHF 57.30**, with the biggest increases seen in:
-
-- **Outpatient doctor visits** (+CHF 22.90)
-- **Hospital outpatient treatments** (+CHF 18.30)
-- **Pharmaceutical products** (+CHF 15.00)
-- **Hospital inpatient treatments** (+CHF 6.90)
+Compared to Q2 2024, overall per capita health spending rose **CHF 57.30**.
 
 The MOKKE database covers nearly 100% of the insured Swiss population, making it a reliable source for identifying long-term cost trends in the healthcare system.
