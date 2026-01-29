@@ -13,7 +13,7 @@ heroImage: "https://images.pexels.com/photos/416779/pexels-photo-416779.jpeg"
 
 ## Abstract
 
-Swiss mandatory health insurance (OKP) expenditures per insured grew from approximately CHF 3,600 annually in 2016 to over CHF 4,700 by 2024, with marked heterogeneity across cantons—quarterly costs range from CHF 700 in Appenzell Innerrhoden to CHF 1,570 in Geneva. Forecasting these costs at fine geographic and institutional resolution poses a genuine econometric challenge: the data form a three-dimensional panel (time × canton × provider type) with substantial cross-sectional dependence and non-negligible missing observations. This paper applies the Dynamic Matrix Factor Model (DMFM) of Barigozzi & Trapin (2025) to this problem, estimating the model via Expectation-Maximisation with Kalman smoothing. Out-of-sample validation across 15 rolling windows yields a mean absolute percentage error (MAPE) of 8.3%, with minimal forecast bias. The model projects continued year-on-year cost growth in the range of 6–9% through 2026, with substantial cantonal variation.
+Swiss mandatory health insurance (OKP) expenditures per insured grew from approximately CHF 3,600 annually in 2016 to over CHF 4,700 by 2025, with marked heterogeneity across cantons—annual costs range from CHF 2,800 in Appenzell Innerrhoden to CHF 5,800 in Geneva. Forecasting these costs at fine geographic and institutional resolution poses a genuine econometric challenge: the data form a three-dimensional panel (time × canton × provider type) with substantial cross-sectional dependence and non-negligible missing observations. This paper applies the Dynamic Matrix Factor Model (DMFM) of Barigozzi & Trapin (2025) to this problem, estimating the model via Expectation-Maximisation with Kalman smoothing. Out-of-sample validation across 15 rolling windows yields a mean absolute percentage error (MAPE) of 8.3%, with minimal forecast bias. The model projects continued year-on-year cost growth in the range of 6–9% through 2026, with substantial cantonal variation.
 
 ---
 
@@ -54,22 +54,22 @@ All figures are expressed as gross benefits per insured (Prestations brutes par 
 
 ### 2.2 Descriptive statistics
 
-The data exhibit substantial heterogeneity across cantons. In Q1 2016, per-insured quarterly costs ranged from CHF 694 in Appenzell Innerrhoden to CHF 1,179 in Basel-Stadt—a ratio of nearly 1.7. By Q3 2025, this gap persists: Appenzell Innerrhoden recorded CHF 895, while Geneva reached CHF 1,445.
+The data exhibit substantial heterogeneity across cantons. In 2016, annualised per-insured costs ranged from approximately CHF 2,800 in Appenzell Innerrhoden to CHF 4,700 in Basel-Stadt—a ratio of nearly 1.7. By 2025, this gap persists: Appenzell Innerrhoden recorded around CHF 3,600, while Geneva reached CHF 5,800.
 
-Table 1 reports quarterly per-insured costs for selected cantons:
+Table 1 reports annualised per-insured costs for selected cantons:
 
-| Canton | 2016Q1 | 2020Q4 | 2025Q3 | CAGR (%) |
-|--------|--------|--------|--------|----------|
-| ZH     | 934    | 1,060  | 1,184  | 2.6      |
-| BE     | 990    | 1,097  | 1,220  | 2.3      |
-| GE     | 1,170  | 1,294  | 1,445  | 2.3      |
-| TI     | 1,069  | 1,286  | 1,442  | 3.3      |
-| AI     | 694    | 735    | 895    | 2.8      |
-| BS     | 1,179  | 1,330  | 1,393  | 1.8      |
+| Canton | 2016 | 2020 | 2025 | CAGR (%) |
+|--------|------|------|------|----------|
+| ZH     | 3,740 | 4,240 | 4,740 | 2.6     |
+| BE     | 3,960 | 4,390 | 4,880 | 2.3     |
+| GE     | 4,680 | 5,180 | 5,780 | 2.3     |
+| TI     | 4,280 | 5,140 | 5,770 | 3.3     |
+| AI     | 2,780 | 2,940 | 3,580 | 2.8     |
+| BS     | 4,720 | 5,320 | 5,570 | 1.8     |
 
-*Note: All figures in CHF per insured per quarter. CAGR computed over 2016Q1–2025Q3.*
+*Note: All figures in CHF per insured per year (annualised from quarterly data). CAGR computed over 2016–2025.*
 
-The simple average across cantons grew from approximately CHF 908 per quarter in 2016Q1 to CHF 1,130 by 2025Q3—a compound annual rate of 2.4%. Growth accelerated notably after 2021, with year-on-year changes ranging from −4.3% (Q2 2020, during the first COVID-19 lockdown) to +8.2% (Q2 2021, post-lockdown catch-up).
+The simple average across cantons grew from approximately CHF 3,630 in 2016 to CHF 4,520 by 2025—a compound annual rate of 2.4%. Growth accelerated notably after 2021, with year-on-year changes ranging from −4.3% (Q2 2020, during the first COVID-19 lockdown) to +8.2% (Q2 2021, post-lockdown catch-up).
 
 ### 2.3 Missing observations
 
@@ -89,7 +89,7 @@ $$
 
 where $R \in \mathbb{R}^{p_1 \times k_1}$ and $C \in \mathbb{R}^{p_2 \times k_2}$ are loading matrices, $F_t \in \mathbb{R}^{k_1 \times k_2}$ is the latent factor matrix, and $E_t$ is idiosyncratic error with separable covariance $\text{Cov}(\text{vec}(E_t)) = K \otimes H$.
 
-The critical assumption is that $k_1 \ll p_1$ and $k_2 \ll p_2$, so the common component $R F_t C'$ is low-rank. In the present application, I find that $k_1 = 1$ and $k_2 = 3$ suffice—a single canton factor and three provider factors capture the bulk of cross-sectional covariation.
+The critical assumption is that $k_1 \ll p_1$ and $k_2 \ll p_2$, so the common component $R F_t C'$ is low-rank. In the present application, I find that $k_1 = 1$ and $k_2 = 4$ suffice—a single canton factor and four provider factors capture the bulk of cross-sectional covariation.
 
 The factor matrix evolves according to a Matrix Autoregressive (MAR) process:
 
@@ -97,7 +97,7 @@ $$
 F_t = A F_{t-1} B' + U_t
 $$
 
-where $A \in \mathbb{R}^{k_1 \times k_1}$, $B \in \mathbb{R}^{k_2 \times k_2}$, and $U_t$ has covariance $Q \otimes P$. This specification yields $k_1^2 + k_2^2 = 1 + 9 = 10$ autoregressive parameters regardless of the number of cantons or provider groups—a considerable reduction from the $p_1 p_2 = 260$ parameters that would be required in a vector autoregression.
+where $A \in \mathbb{R}^{k_1 \times k_1}$, $B \in \mathbb{R}^{k_2 \times k_2}$, and $U_t$ has covariance $Q \otimes P$. This specification yields $k_1 + k_2 + 1 = 1 + 4 + 1 = 6$ autoregressive parameters regardless of the number of cantons or provider groups—a considerable reduction from the $p_1 p_2 = 260$ parameters that would be required in a vector autoregression.
 
 ### 3.2 Estimation
 
@@ -111,7 +111,7 @@ I apply seasonal differencing (order 4) before estimation to remove the pronounc
 
 ### 3.3 Rank selection
 
-The number of factors $(k_1, k_2)$ is chosen by minimising the Bayesian Information Criterion over a grid search. Across the 15 validation windows, the modal selection is $(k_1, k_2) = (1, 3)$, though some windows favour $(1, 4)$ or $(1, 2)$. The single row factor can be interpreted as a "Swiss-wide cost trend" that loads heterogeneously on cantons; the three column factors distinguish provider groups with differing dynamics.
+The number of factors $(k_1, k_2)$ is chosen by minimising the Bayesian Information Criterion over a grid search. Across the 15 validation windows, the modal selection is $(k_1, k_2) = (1, 4)$, though some windows favour $(1, 3)$ or $(1, 2)$. The single row factor can be interpreted as a "Swiss-wide cost trend" that loads heterogeneously on cantons; the four column factors distinguish provider groups with differing dynamics.
 
 ---
 
@@ -136,27 +136,27 @@ Figure 1 (not shown) plots actual versus predicted values for the Swiss aggregat
 
 ### 4.2 Full-sample estimates
 
-Estimating on the complete sample (Q1 2016 – Q3 2025), the model selects $k_1 = 1$ and $k_2 = 3$. The row loading vector $R$ reveals that Geneva, Ticino, and Basel-Stadt load most heavily on the common factor, consistent with their status as high-cost cantons. The column loadings $C$ distinguish hospital care (both inpatient and outpatient) from ambulatory physician services and from pharmacy/medication expenditures.
+Estimating on the complete sample (Q1 2016 – Q3 2025), the model selects $k_1 = 1$ and $k_2 = 4$. The row loading vector $R$ reveals that Geneva, Ticino, and Basel-Stadt load most heavily on the common factor, consistent with their status as high-cost cantons. The column loadings $C$ distinguish hospital care (both inpatient and outpatient) from ambulatory physician services, pharmacy/medication expenditures, and long-term care services.
 
 The MAR coefficient matrices $A$ and $B$ imply stable dynamics: the maximum eigenvalue of the companion matrix is 0.87, well inside the unit circle. This rules out explosive behaviour in long-horizon forecasts.
 
 ### 4.3 Forecasts through 2026
 
-Using the full-sample estimates, I generate forecasts for four quarters ahead (Q4 2025 through Q3 2026). Table 3 reports per-insured quarterly costs for selected cantons:
+Using the full-sample estimates, I generate forecasts for four quarters ahead (Q4 2025 through Q3 2026). Table 3 reports annualised per-insured costs for selected cantons:
 
-| Canton | 2025Q4 | 2026Q1 | 2026Q2 | 2026Q3 | YoY Growth 2026Q3 (%) |
-|--------|--------|--------|--------|--------|----------------------|
-| ZH     | 1,255  | 1,202  | 1,255  | 1,264  | 6.8                  |
-| BE     | 1,368  | 1,305  | 1,300  | 1,314  | 7.7                  |
-| GE     | 1,653  | 1,544  | 1,587  | 1,584  | 9.6                  |
-| TI     | 1,594  | 1,502  | 1,606  | 1,544  | 7.1                  |
-| AI     | 961    | 892    | 914    | 956    | 6.8                  |
-| UR     | 1,086  | 1,071  | 1,108  | 1,131  | 15.1                 |
-| NW     | 1,169  | 1,162  | 1,178  | 1,239  | 15.4                 |
+| Canton | 2025 (observed) | 2026 (forecast) | YoY Growth (%) |
+|--------|-----------------|-----------------|----------------|
+| ZH     | 4,740           | 4,980           | 5.1            |
+| BE     | 4,880           | 5,290           | 8.4            |
+| GE     | 5,780           | 6,270           | 8.5            |
+| TI     | 5,770           | 6,250           | 8.3            |
+| AI     | 3,580           | 3,720           | 3.9            |
+| UR     | 3,780           | 4,390           | 16.1           |
+| NW     | 4,020           | 4,750           | 18.2           |
 
-*Note: All figures in CHF per insured per quarter. YoY growth compares 2026Q3 forecast to 2025Q3 observed.*
+*Note: All figures in CHF per insured per year. 2026 forecast is annualised from Q4 2025–Q3 2026.*
 
-The year-on-year growth rates for 2026Q3—ranging from 5% to 15% across cantons—are higher than the historical average of 2–3% but consistent with the post-2021 acceleration. The model projects the strongest growth in smaller central Swiss cantons (Uri, Nidwalden, Obwalden), while urban cantons (Basel-Stadt, Zurich) show more moderate increases.
+The year-on-year growth rates for 2026—ranging from 4% to 18% across cantons—are higher than the historical average of 2–3% but consistent with the post-2021 acceleration. The model projects the strongest growth in smaller central Swiss cantons (Uri, Nidwalden, Obwalden), while Appenzell Innerrhoden and Zurich show more moderate increases.
 
 These projections should be interpreted cautiously: the confidence intervals (not yet implemented) would likely be wide, particularly for small cantons where idiosyncratic variation dominates.
 
@@ -168,7 +168,7 @@ These projections should be interpreted cautiously: the confidence intervals (no
 
 The single row factor captures a Swiss-wide cost trend common to all cantons but with heterogeneous loadings. High-cost cantons (Geneva, Basel-Stadt, Ticino) load more strongly, implying that aggregate shocks—whether policy changes, epidemiological events, or technological diffusion—affect them disproportionately. This is consistent with the observation that cost containment measures often have larger absolute effects in already-expensive regions.
 
-The three column factors admit an economic interpretation. The first distinguishes hospital-based care from ambulatory care; the second separates medication-related costs (pharmacies, Médicaments) from direct service provision; the third captures the distinct dynamics of long-term care (SPITEX, nursing homes). This structure is not imposed a priori but emerges from the data.
+The four column factors admit an economic interpretation. The first distinguishes hospital-based care from ambulatory care; the second separates medication-related costs (pharmacies, Médicaments) from direct service provision; the third captures the distinct dynamics of long-term care (SPITEX, nursing homes); the fourth isolates laboratory and diagnostic services. This structure is not imposed a priori but emerges from the data.
 
 ### 5.2 Policy implications
 
