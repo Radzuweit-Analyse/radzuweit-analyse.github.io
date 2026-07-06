@@ -5,23 +5,23 @@ pubDate: 2025-08-10
 tags: ["health insurance", "public policy", "cost growth", "economic outlook"]
 ---
 
-## Swiss health costs grew 4.5% in Q2 2025, a mild deceleration from Q1
+## Growth cools to 4.5% in Q2 2025, down from Q1's pace
 
-Rolling-4-quarter, population-weighted cost per insured rose 4.47% year on year through Q2 2025, down from 4.80% the previous quarter, a 0.33 percentage point deceleration. This is our own computation from the KPOKPCH tensor. As with every quarter in this series, the freshest print is provisional and can still revise.
+Growth eased in Q2 2025: the rolling-4-quarter, population-weighted rate came in at 4.5%, down from 4.8% the previous quarter, a 0.3-point deceleration. As always in this series, the current quarter's number is provisional and can still revise.
 
 ### Scorecard: how did our backtest do?
 
-A rolling-origin backtest fit using only data through Q1 2025, the model still had no public track record at this point, projected 4.5% for Q2 2025 (80% band 2.3% to 7.2%). The actual, 4.47%, lands inside that band, close to the point forecast: a hit.
+A rolling-origin backtest, fit using only data through Q1 2025, projected 4.5% for Q2 2025 (80% band 2.3% to 7.2%). The model still had no public track record at this point. The actual landed at 4.5%, right on the point forecast. A clean hit.
 
 ![Annualized forecast fan chart, Q2 2025 vintage](/figures/forecast_ch_hairlines_annualized_yoy_2025Q2.png)
 
 ### Under the surface
 
-Cantonal dispersion widened. Zug topped the table at 9.85%, Schaffhausen was essentially flat at 0.03%, a 9.82 point spread, up from 7.98 points a year earlier. The residual "Autres" group grew fastest of our 11 categories, at 14.26%, with SPITEX (home care) close behind at 11.30%. Medication costs (Médicaments, médecin-dispensed) were the slowest riser at 1.87%. "Autres" was again the biggest quarter-on-quarter accelerator, gaining a further 3.99 percentage points on its own growth rate, two quarters running as the fastest-moving line item in our own cost-group breakdown.
+Zug topped the cantonal table this quarter, Schaffhausen was essentially flat, a gap of 10 points, up from 8 a year earlier. The residual "Autres" category grew fastest of our cost groups, with SPITEX (home care) close behind; medication costs rose the least. "Autres" was again the biggest quarter-on-quarter accelerator, two quarters running as the fastest-moving line item in the breakdown.
 
 ### Refreshed outlook
 
-Looking 4 quarters ahead from this vintage, the model projects 4.5% by Q2 2026 (80% band 1.8% to 8.5%).
+4 quarters out, the model now points to 4.5% by Q2 2026 (80% band 1.8% to 8.5%).
 
 ---
 

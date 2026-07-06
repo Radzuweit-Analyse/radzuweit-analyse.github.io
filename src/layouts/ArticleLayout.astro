@@ -73,8 +73,8 @@ const { frontmatter } = Astro.props;
         </div>
         
         {frontmatter.heroImage && (
-          <div class="aspect-video mb-8 rounded-xl overflow-hidden shadow-lg">
-            <img src={frontmatter.heroImage} alt={frontmatter.title} class="w-full h-full object-cover" />
+          <div class="mb-8 rounded-xl overflow-hidden shadow-lg">
+            <img src={frontmatter.heroImage} alt={frontmatter.title} class="w-full h-auto" />
           </div>
         )}
         

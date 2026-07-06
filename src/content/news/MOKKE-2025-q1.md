@@ -5,23 +5,23 @@ pubDate: 2025-05-10
 tags: ["health insurance", "public policy", "cost growth", "economic outlook"]
 ---
 
-## Swiss health costs grew 4.8% in Q1 2025, a slight acceleration from Q4 2024
+## Up 4.8% in Q1 2025: a mild acceleration from Q4 2024
 
-Rolling-4-quarter, population-weighted cost per insured rose 4.80% year on year through Q1 2025, up from 4.40% the previous quarter. That is a 0.40 percentage point acceleration. This is our own computation from the KPOKPCH tensor, built on the FOPH/BAG MOKKE cost-monitoring data, not FOPH's own summary of it. The most recent quarter in any release is provisional (early invoicing is still catching up), so this figure can still revise; our scorecard entries note that.
+This is the first entry in a quarterly series that scores our own cost forecast against reality as it arrives. Each post reports the rolling-4-quarter, population-weighted growth rate in per-insured OKP costs; a single quarter alone swings too much on deductible timing to read cleanly. Through Q1 2025 that measure rose 4.8%, up from 4.4% the prior quarter, a 0.4-point acceleration. The number is ours, computed from the KPOKPCH tensor built on FOPH/BAG's MOKKE cost-monitoring data. The freshest quarter in any release is still provisional and can revise.
 
 ### Scorecard: how did our backtest do?
 
-KPOKPCH did not exist publicly in Q1 2025, so there is no live forecast to grade. Instead, a rolling-origin backtest, a fresh S1 (YoY DMFM) fit using only data through 2024Q4, exactly as production fits at each new vintage, projected 5.2% for Q1 2025 (80% band 2.9% to 7.8%). The actual, 4.80%, falls inside that band: a hit. The band is wide enough, close to 5 percentage points corner to corner, that a hit here mostly confirms the model wasn't badly miscalibrated a quarter out, not that it pinned the number precisely.
+KPOKPCH did not exist publicly in Q1 2025, so there is no live forecast to grade against. Instead, this is a backtest: a fresh S1 (YoY DMFM) fit using only data through 2024Q4, exactly as production fits at each new vintage, projected 5.2% for Q1 2025, with an 80% band of 2.9% to 7.8%. The actual came in at 4.8%, comfortably inside that band. At nearly 5 points wide, the band makes this hit a loose calibration check more than a precise one.
 
 ![Annualized forecast fan chart, Q1 2025 vintage](/figures/forecast_ch_hairlines_annualized_yoy_2025Q1.png)
 
 ### Under the surface
 
-Cantonal spread narrowed slightly. Zug led at 7.47% and Schaffhausen trailed at 1.78%, a 5.69 point spread, down from 6.70 points a year earlier. SPITEX (home care) and the residual "Autres" group grew fastest, at 11.15% and 10.27% respectively, both well above the CH-wide average. Medication costs (Médicaments, médecin-dispensed) brought up the rear at 2.65%. "Autres" was also this quarter's biggest accelerator, up 3.27 percentage points on its own growth rate from Q4 2024, the single largest quarter-on-quarter swing among our 11 cost groups.
+Cantonal spread narrowed slightly: Zug led, Schaffhausen trailed, a gap of 6 points, down from 7 a year earlier. Cost-group growth was led by SPITEX (home care) and the residual "Autres" category; medication costs (Médicaments, médecin-dispensed) were the slowest riser. "Autres" was also this quarter's biggest accelerator, again the fastest-moving line item quarter on quarter.
 
 ### Refreshed outlook
 
-Looking 4 quarters ahead from this vintage, the model projects 4.65% by Q1 2026 (80% band 1.75% to 8.72%). That band reflects how much uncertainty compounds at a one-year horizon on a 37-quarter estimation sample.
+The refreshed outlook now runs 4 quarters ahead, to Q1 2026: 4.7% (80% band 1.8% to 8.7%). That width reflects how much uncertainty compounds at a one-year horizon on a 37-quarter estimation sample.
 
 ---
 
