@@ -1,31 +1,30 @@
 ---
-title: "MOKKE: third quarter 2025"
-description: "Analyzing the latest release of the Swiss Federal Office of Public Health cost monitoring."
+title: "Swiss health costs, quarterly: Q3 2025"
+description: "Our own rolling-4Q forecast scorecard and cost breakdown for Q3 2025, from the KPOKPCH dynamic matrix factor model."
 pubDate: 2025-11-10
 tags: ["health insurance", "public policy", "cost growth", "economic outlook"]
 ---
 
-## Swiss Health Insurance Costs Rise by 5.3% in Q3 2025
+## Swiss health costs grew +5.2% in Q3 2025, accelerating again
 
-The latest data from the Swiss Federal Office of Public Health (FOPH), published through its cost monitoring tool [MOKKE](https://www.bag.admin.ch/en/monitoring-of-ongoing-cost-development), shows that mandatory health insurance (AOS) costs increased by **5.3% year-over-year** in the third quarter of 2025.
+Rolling-4-quarter, population-weighted cost per insured rose **5.21%** year-on-year through Q3 2025, up from **+4.47%** the previous quarter (+0.74 percentage points) -- our own computation from the KPOKPCH tensor.
 
-On average, an insured individual spent **CHF 4 904** on covered services over the past 12 months, that is **CHF 247 more** than a year earlier.
+### Scorecard: how did our backtest do?
 
-### Key Cost Increases
+A rolling-origin backtest fit using only data through Q2 2025 projected **+4.49%** for Q3 2025 (80% band +2.95% to +6.26%). The actual, +5.21%, lands inside that band but toward its upper end -- a hit, though the model underestimated just how much growth would accelerate this quarter.
 
-The fastest-growing cost categories were:
+![Annualized forecast fan chart, Q3 2025 vintage](/figures/forecast_ch_hairlines_annualized_yoy_2025Q3.png)
 
-- **Other medical services** (+13.4%)
-- **Home care and support services** (+12.5%)
-- **Psychotherapy services** (+11.0%)
+### Under the surface
 
-### Year-on-Year Comparison
+- **Cantonal dispersion widened sharply**: Nidwalden led at +14.28%, Glarus barely moved at +0.80%, a 13.48-point spread -- well above the 9.56-point spread a year earlier.
+- **SPITEX (home care) and "Autres" again led our 11 cost groups**, at +12.53% and +12.37%, while medication costs and hospital inpatient stays (Hôpitaux séjours) tied for the slowest at +3.76%.
+- **Pharmacies were this quarter's biggest accelerator**, gaining 2.00 percentage points on their own growth rate -- a change of pace from the "Autres" group that led the prior two quarters.
 
-Compared to Q3 2024, overall per capita health spending rose **CHF 91.00**, with the biggest increases seen in:
+### Refreshed outlook
 
-- **Outpatient doctor visits** (+CHF 22.90)
-- **Hospital outpatient treatments** (+CHF 18.30)
-- **Pharmaceutical products** (+CHF 15.00)
-- **Hospital inpatient treatments** (+CHF 6.90)
+Looking 4 quarters ahead from this vintage, the model projects **+3.57%** by Q3 2026 (80% band +0.85% to +7.47%) -- notably below this quarter's own +5.21%, reflecting the model's mean-reverting dynamics rather than a call that growth is about to reverse abruptly.
 
-The MOKKE database covers nearly 100% of the insured Swiss population, making it a reliable source for identifying long-term cost trends in the healthcare system.
+---
+
+*Data: Federal Office of Public Health (BAG/OFSP) OKP cost-monitoring dashboard (MOKKE), via [opendata.swiss](https://opendata.swiss/). All analysis and forecasts are our own -- see the [methodology article](/articles/kpopkpch_forecasting_article) and the [KPOKPCH repository](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH).*

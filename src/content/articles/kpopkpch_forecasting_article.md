@@ -1,210 +1,112 @@
 ---
 title: "Forecasting mandatory health insurance expenditures in Switzerland"
-description: "An empirical application of the Dynamic Matrix Factor Model to Swiss OKP cost data"
+description: "Applying a Dynamic Matrix Factor Model to Swiss OKP cost data: method, an honest validation record, a COVID-era negative result, and the 2026 forecast."
 author: "Raphaël Radzuweit"
 pubDate: 2025-08-01
+updatedDate: 2026-07-06
 readingTimeInMinutes: 12
 tags: ["forecasting", "econometrics", "health insurance", "public policy", "python"]
 featured: true
-heroImage: "https://images.pexels.com/photos/416779/pexels-photo-416779.jpeg"
+heroImage: "/figures/forecast_ch_hairlines_annualized_yoy.png"
 ---
 
-# Forecasting Swiss Mandatory Health Insurance Costs: An Application of the Dynamic Matrix Factor Model
+# Forecasting Swiss mandatory health insurance costs with a Dynamic Matrix Factor Model
 
-## Abstract
+> **In short**: Swiss mandatory health insurance (OKP) costs form a panel of 26 cantons × 11 cost groups, quarterly since 2016. I fit a Dynamic Matrix Factor Model (DMFM, Barigozzi & Trapin 2025) to this panel and forecast it forward. In rolling-origin validation (10 origins, 2022Q4-2025Q1, horizons 1-7 quarters) the model beats both a status-quo benchmark and a naive rolling-trend benchmark, significantly at every horizon through six quarters. It currently projects **+2.2%** annualized cost growth for 2026 (80% band **-0.3% to +5.6%**), well below the 6-9% range I'd have quoted from an earlier, less careful pass at this exercise. This piece also reports a negative result (COVID-era shock modeling didn't help) and is upfront about what the prediction intervals do and don't capture. Code, data, and the full validation suite are on [GitHub](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH); a running scorecard of how each quarter's forecast actually performed lives in the [quarterly update series](/news).
 
-Swiss mandatory health insurance (OKP) expenditures per insured grew from approximately CHF 3,600 annually in 2016 to over CHF 4,700 by 2025, with marked heterogeneity across cantons—annual costs range from CHF 2,800 in Appenzell Innerrhoden to CHF 5,800 in Geneva. Forecasting these costs at fine geographic and institutional resolution poses a genuine econometric challenge: the data form a three-dimensional panel (time × canton × provider type) with substantial cross-sectional dependence and non-negligible missing observations. This paper applies the Dynamic Matrix Factor Model (DMFM) of Barigozzi & Trapin (2025) to this problem, estimating the model via Expectation-Maximisation with Kalman smoothing. Out-of-sample validation across 15 rolling windows yields a mean absolute percentage error (MAPE) of 8.3%, with minimal forecast bias. The model projects continued year-on-year cost growth in the range of 6–9% through 2026, with substantial cantonal variation.
+## Introduction
 
----
+Switzerland's mandatory health insurance (Obligatorische Krankenpflegeversicherung, OKP) covers essentially the whole resident population, and its cost growth feeds directly into next year's premiums. Costs are published quarterly, broken out by canton and by the type of care provider — inpatient hospital stays, outpatient physician visits, pharmacies, home care, and so on. That structure is genuinely two-dimensional: a canton's costs and a cost category's costs both move together with the rest of the panel, but for different reasons and probably at different speeds. Forecasting this well means finding a small number of common trends without either throwing away the cantonal detail (by looking only at the Swiss-wide total) or overfitting 26×11 = 286 separate series independently.
 
-## 1. Introduction
+The Dynamic Matrix Factor Model of [Barigozzi & Trapin (2025)](https://arxiv.org/abs/2502.04112) is built for exactly this shape of problem: it factors a matrix-valued time series into row loadings (here, cantons), column loadings (cost groups), and a low-dimensional common factor that evolves over time, estimated by EM with a Kalman filter/smoother rather than by flattening the panel into one long vector. I implement and apply it here as [KPOKPCH](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH), an open-source package with the Swiss OKP application as its running example. This article works through the method, an honest account of how well it validates out of sample, a negative result worth reporting on its own, and the current 2026 forecast. Every quarter, the [quarterly update series](/news) scores that forecast against what actually happened and refreshes it — this article is the methodology behind that series, not a one-off exercise.
 
-The Swiss healthcare system is frequently cited as one of the most expensive in the OECD, with total health expenditure exceeding 11% of GDP. A distinctive feature of this system is the mandatory basic health insurance (Obligatorische Krankenpflegeversicherung, OKP), which covers all residents and is financed through individual premiums rather than general taxation. Premiums are set by insurers subject to regulatory approval, and because they vary by canton of residence, forecasting costs at the cantonal level has direct policy relevance.
+## Data
 
-The question I address here is straightforward: can we produce reliable multi-step-ahead forecasts of per-insured healthcare costs, disaggregated by canton and provider type, using a parsimonious factor structure? The answer matters for premium setting, cantonal health budgets, and the broader policy debate on cost containment.
+The panel runs quarterly from 2016Q1 through 2026Q1 — 41 observations — across all 26 cantons and 11 cost groups: hospital inpatient stays, hospital outpatient care, two flavours of ambulatory physician services (with and without in-house lab work), physician-dispensed medications, pharmacies, laboratories, physiotherapy, home care (Spitex), nursing homes, and a residual "other" category. Figures are gross benefits per insured (Prestations brutes par assuré), in Swiss francs.
 
-Traditional approaches to this problem either model aggregate series (losing geographic detail) or estimate separate models for each canton-provider pair (ignoring cross-sectional information). Neither is satisfactory. The DMFM offers a middle path: it captures common dynamics through a small number of latent factors while preserving the matrix structure of the data.
+The source is the Federal Office of Public Health's (BAG/OFSP) [OKP cost-monitoring dashboard](https://www.bag.admin.ch/en/monitoring-of-ongoing-cost-development) (MOKKE), published quarterly via [opendata.swiss](https://opendata.swiss/); the fetching logic is adapted from [cleanopendata/foph-healthinsurance](https://github.com/cleanopendata/foph-healthinsurance). I use a committed data snapshot (retrieved 2026-07-03) so the validation numbers below are reproducible against a fixed panel rather than whatever opendata.swiss happens to serve on a given day — refreshing it is a documented, one-command step, and any diff against the committed snapshot is reviewed before it's ever recommitted. A small, currently unused OFS dataset on health-personnel density by canton is prepared alongside the main panel but not yet wired into the model (more on that below). An insured-population series, also from the BAG dashboard, is used to build a Switzerland-wide aggregate as a population-weighted average across cantons rather than a naive sum — cantons are per-insured rates, not totals, so summing them has no economic meaning.
 
-### Related literature
+## Method
 
-The theoretical foundation for this work is Barigozzi & Trapin (2025), who develop an EM-Kalman estimation procedure for large approximate dynamic matrix factor models. Their consistency results hold as both cross-sectional dimensions and the time dimension grow, which is precisely the asymptotic regime relevant here. Earlier contributions on matrix-variate factor models include Chen & Fan (2023) for static settings and Yu et al. (2022) for high-dimensional panels. For tensor extensions accommodating additional dimensions, see Cen & Lam (2025).
-
-Applications of factor models to healthcare cost forecasting remain sparse. The literature has focused primarily on mortality forecasting (Lee-Carter and its extensions) and aggregate health expenditure projections. To my knowledge, this is the first application of the DMFM to granular health insurance cost data.
-
----
-
-## 2. Data
-
-### 2.1 Source and coverage
-
-The data come from the Federal Statistical Office (FSO) monitoring of mandatory health insurance costs. I use quarterly observations from Q1 2016 through Q3 2025, yielding 39 time periods. The cross-sectional units are the 26 Swiss cantons, and the provider categories comprise:
-
-- Hospital inpatient care (Hôpitaux séjours)
-- Hospital outpatient care (Hôpitaux ambulatoires)
-- Physicians (Médecins ambulatoires)
-- Pharmacies
-- Medications (Médicaments)
-- Laboratories (Laboratoires)
-- Physiotherapists (Physiothérapeutes)
-- Home care services (SPITEX)
-- Nursing homes (Établissements médico-sociaux)
-- Other providers (Autres)
-
-All figures are expressed as gross benefits per insured (Prestations brutes par assuré) in Swiss francs.
-
-### 2.2 Descriptive statistics
-
-The data exhibit substantial heterogeneity across cantons. In 2016, annualised per-insured costs ranged from approximately CHF 2,800 in Appenzell Innerrhoden to CHF 4,700 in Basel-Stadt—a ratio of nearly 1.7. By 2025, this gap persists: Appenzell Innerrhoden recorded around CHF 3,600, while Geneva reached CHF 5,800.
-
-Table 1 reports annualised per-insured costs for selected cantons:
-
-| Canton | 2016 | 2020 | 2025 | CAGR (%) |
-|--------|------|------|------|----------|
-| ZH     | 3,740 | 4,240 | 4,740 | 2.6     |
-| BE     | 3,960 | 4,390 | 4,880 | 2.3     |
-| GE     | 4,680 | 5,180 | 5,780 | 2.3     |
-| TI     | 4,280 | 5,140 | 5,770 | 3.3     |
-| AI     | 2,780 | 2,940 | 3,580 | 2.8     |
-| BS     | 4,720 | 5,320 | 5,570 | 1.8     |
-
-*Note: All figures in CHF per insured per year (annualised from quarterly data). CAGR computed over 2016–2025.*
-
-The simple average across cantons grew from approximately CHF 3,630 in 2016 to CHF 4,520 by 2025—a compound annual rate of 2.4%. Growth accelerated notably after 2021, with year-on-year changes ranging from −4.3% (Q2 2020, during the first COVID-19 lockdown) to +8.2% (Q2 2021, post-lockdown catch-up).
-
-### 2.3 Missing observations
-
-Roughly 10% of canton-provider-quarter cells are missing, concentrated in smaller cantons and newer provider categories. The category "Psychothérapeutes" (psychotherapists, separately billable since 2022) has 95% missing values over the full sample and is merged into "Autres" for estimation.
-
----
-
-## 3. Econometric Framework
-
-### 3.1 Model specification
-
-Let $Y_t \in \mathbb{R}^{p_1 \times p_2}$ denote the matrix of observed per-insured costs at time $t$, with rows indexing cantons ($p_1 = 26$) and columns indexing provider groups ($p_2 = 10$). The DMFM decomposes this matrix as:
+Let $Y_t$ be the $26 \times 11$ matrix of per-insured costs at quarter $t$. The DMFM writes
 
 $$
-Y_t = R F_t C' + E_t
+Y_t = R F_t C' + E_t,
 $$
 
-where $R \in \mathbb{R}^{p_1 \times k_1}$ and $C \in \mathbb{R}^{p_2 \times k_2}$ are loading matrices, $F_t \in \mathbb{R}^{k_1 \times k_2}$ is the latent factor matrix, and $E_t$ is idiosyncratic error with separable covariance $\text{Cov}(\text{vec}(E_t)) = K \otimes H$.
+with $R$ ($26 \times k_1$) and $C$ ($11 \times k_2$) loading matrices, a small latent factor matrix $F_t$ ($k_1 \times k_2$), and idiosyncratic noise $E_t$. The factor matrix follows a first-order matrix autoregression, $F_t = A F_{t-1} B' + U_t$, estimated here as an unconstrained Kronecker product rather than separately identified $A$ and $B$ — a detail that matters less for the economics than for getting the estimator's vectorization convention right, which is where a fair amount of the implementation effort (and a regression test) actually went.
 
-The critical assumption is that $k_1 \ll p_1$ and $k_2 \ll p_2$, so the common component $R F_t C'$ is low-rank. In the present application, I find that $k_1 = 1$ and $k_2 = 4$ suffice—a single canton factor and four provider factors capture the bulk of cross-sectional covariation.
+Two specifications are fit, both estimated on the raw quarterly data rather than fixed to a random walk:
 
-The factor matrix evolves according to a Matrix Autoregressive (MAR) process:
+- **S1 (headline)**: year-on-year log-differences, $y_t = \log Y_t - \log Y_{t-4}$ — stationary by construction, which is what the model's estimation theory assumes.
+- **S2 (robustness check)**: seasonally-adjusted log-levels, fit with dynamics estimated directly rather than differenced.
 
-$$
-F_t = A F_{t-1} B' + U_t
-$$
+S2 turns out not to be competitive. A stationary autoregression fit directly on levels reverts to the *sample-average level*, by construction — a costly restriction on a series that has trended upward for a decade, and the restriction gets worse, not better, as the forecast horizon grows. S1 doesn't have this problem because differencing removes the trend before the mean-reversion assumption is ever imposed. I keep S2 in the codebase as a documented robustness check precisely because it fails informatively, not because it's a candidate for production.
 
-where $A \in \mathbb{R}^{k_1 \times k_1}$, $B \in \mathbb{R}^{k_2 \times k_2}$, and $U_t$ has covariance $Q \otimes P$. This specification yields $k_1 + k_2 + 1 = 1 + 4 + 1 = 6$ autoregressive parameters regardless of the number of cantons or provider groups—a considerable reduction from the $p_1 p_2 = 260$ parameters that would be required in a vector autoregression.
+**The rank story is worth being explicit about, because the two criteria I have for picking $(k_1, k_2)$ disagree.** A BIC grid search and an eigenvalue-ratio criterion — the standard, in-sample ways of choosing the number of factors — both select $k_1 = k_2 = 1$: a single common trend on each side. But rolling-origin validation tells a different story: $k_1 = 1, k_2 = 2$ (a second cost-group factor) beats the in-sample-selected rank by 9-25% lower RMSE at every horizon, with no loss of stability in the fitted dynamics across rolling windows. That gap held up when I re-checked it against two additional quarters of data. I read this as genuine underfitting by the in-sample criteria — a second cost-group factor captures real structure that a single factor misses — and I pin production to $k_1=1, k_2=2$ rather than defer to the automatic selection. This is a case where an out-of-sample check overruled an in-sample one, and I'd rather report that explicitly than paper over the disagreement.
 
-### 3.2 Estimation
+## Validation
 
-Estimation follows Barigozzi & Trapin (2025). The algorithm iterates between:
+I evaluate S1 by rolling-origin pseudo-out-of-sample validation: refit the model at each of 10 origins from 2022Q4 through 2025Q1, forecast 1 to 7 quarters ahead from each, and compare the forecast to what was actually observed once it arrived. Origin counts shrink past horizon 4 simply because fewer origins are old enough to have a realized 5-, 6-, or 7-quarter-ahead outcome yet.
 
-**E-step:** Given current parameter estimates, compute smoothed factor estimates $\hat{F}_{t|T}$ and their covariances via the Kalman filter and smoother. Missing observations are handled by zeroing out the corresponding rows of the Kalman gain—no imputation is required.
+| horizon | n origins | status quo | S1 (YoY DMFM) | S2 (levels) | naive trend |
+|---|---|---|---|---|---|
+| 1 | 10 | 1.2 | **0.7** | 3.6 | 0.8 |
+| 2 | 10 | 2.4 | **1.2** | 7.5 | 1.3 |
+| 3 | 10 | 3.6 | **1.6** | 11.6 | 1.7 |
+| 4 | 10 | 4.5 | **1.8** | 15.5 | 2.0 |
+| 5 | 9 | 5.6 | **2.0** | 16.3 | 2.4 |
+| 6 | 8 | 6.8 | **2.5** | 17.1 | 3.0 |
+| 7 | 7 | 7.9 | **2.8** | 17.9 | 3.3 |
 
-**M-step:** Given smoothed factors, update loadings $(R, C)$ by regression, idiosyncratic covariances $(H, K)$ from residuals, and MAR parameters $(A, B)$ by vectorised least squares.
+*RMSE, annualized Switzerland-wide total, thousands CHF per insured.*
 
-I apply seasonal differencing (order 4) before estimation to remove the pronounced quarterly pattern in healthcare utilisation. Forecasts are then integrated back to levels.
+![RMSE by forecast horizon, S1 (YoY DMFM) vs the status-quo, levels, and naive-trend benchmarks](/figures/validation_rmse_by_horizon.png)
 
-### 3.3 Rank selection
+S1 beats the pre-existing status-quo model at every horizon, and the gap is statistically significant (Diebold-Mariano, Harvey small-sample correction) at horizons 1 through 6; at horizon 7 the test itself becomes uninformative (the variance estimator turns non-positive with only 7 origins to work with), so I report that as a non-result rather than either a win or a loss. S1 also beats a naive rolling-12-month-trend benchmark on raw RMSE at every horizon. S2 is not competitive with either benchmark at any horizon, consistent with the mean-reversion problem described above.
 
-The number of factors $(k_1, k_2)$ is chosen by minimising the Bayesian Information Criterion over a grid search. Across the 15 validation windows, the modal selection is $(k_1, k_2) = (1, 4)$, though some windows favour $(1, 3)$ or $(1, 2)$. The single row factor can be interpreted as a "Swiss-wide cost trend" that loads heterogeneously on cantons; the four column factors distinguish provider groups with differing dynamics.
+Prediction intervals are built by simulating factor and idiosyncratic paths from the estimated innovation covariances (1,000 draws by default, 5,000 for the figures in this article), not by a closed-form formula. Checked against realized outcomes at the same 10 origins, the 80% interval on the annualized Switzerland-wide total covers almost exactly 80% of realized outcomes (32 of 40 origin-horizon pairs, horizons 1-4); the 95% interval covers all 40, which at this sample size isn't distinguishable from correct calibration either way. I'd treat both numbers as indicative rather than precise — 40 origin-horizon pairs is not a lot of data to calibrate a prediction interval against, and I say so rather than round it up to a stronger claim.
 
----
+## A negative result: COVID-19 needed no special treatment
 
-## 4. Empirical Results
+It's tempting to assume a disruption as large as the COVID-19 pandemic needs explicit handling — a shock term, or masking the affected quarters as missing — rather than just letting the model see it like any other data point. I tested that assumption rather than asserting it. Three variants, compared by the same rolling-origin validation as above: (A) no special treatment, letting COVID-affected quarters enter the year-on-year series untouched; (B) estimating dedicated shock effects for the pandemic dip and rebound via the model's own shock-estimation machinery; (C) masking the affected quarters as missing data and letting the EM algorithm's missing-data handling take over.
 
-### 4.1 Out-of-sample validation
+Neither alternative improved on doing nothing. B was 2-7% worse than A in RMSE at horizons 1 through 4, and at one of ten origins its estimated innovation covariance came out non-positive-definite, crashing the downstream simulation outright — a stability failure on top of the accuracy loss. C was far worse again (RMSE 1.3-3x A's, badly miscalibrated coverage at longer horizons, two more simulation-crashing failures), the expected cost of throwing away a fifth of an already-short 37-observation training series for one disruption. Production keeps variant A: no COVID treatment. I'm reporting this mainly because "we tried a more sophisticated approach and it didn't help" is a useful data point that's easy to skip past in a methods writeup that only describes what shipped.
 
-I assess forecast accuracy using expanding-window validation. The first window trains on data through Q1 2021 and forecasts the subsequent four quarters; the window then expands by one quarter and the exercise repeats. This yields 15 forecast windows, with training sets ending between Q1 2021 and Q3 2024.
+## The 2026 forecast
 
-Table 2 reports the results:
+Fit on the full sample through 2026Q1, S1 currently projects Switzerland-wide OKP costs per insured growing **+2.2%** in 2026 relative to 2025 (80% interval: **-0.3% to +5.6%**). The forecast fan chart at the top of this article shows the annualized rolling-4-quarter series through the current forecast horizon; the interval widens with horizon as both factor-path and idiosyncratic uncertainty compound.
 
-| Metric | Mean | Std. Dev. |
-|--------|------|-----------|
-| RMSE   | 0.0115 | 0.0020 |
-| MAE    | 0.0071 | 0.0015 |
-| MAPE   | 8.31%  | 2.05%  |
-| Bias   | −0.38% | 0.27%  |
+The [quarterly update series](/news) tracks this forecast against reality one quarter at a time, honestly graded, including a miss it recorded when growth decelerated more sharply than the model's Q4 2025-vintage forecast allowed for.
 
-The MAPE of 8.3% is reasonable for quarterly health cost data, which are subject to both sampling variation and genuine volatility from epidemiological shocks. The bias is slightly negative, indicating a tendency to under-forecast by about 0.4%—a minor and potentially correctable deficiency.
+## Limitations
 
-Figure 1 (not shown) plots actual versus predicted values for the Swiss aggregate across all validation windows. The correlation exceeds 0.99, and the scatter clusters tightly around the 45-degree line. Forecast errors show no systematic pattern by horizon: one-step-ahead errors are only marginally smaller than four-step-ahead errors, suggesting that the factor dynamics provide genuine predictive content rather than merely interpolating.
+Two limitations are worth stating plainly rather than burying in a footnote.
 
-### 4.2 Full-sample estimates
+**The prediction intervals reflect innovation noise only.** The simulated 80%/95% bands treat the fitted loadings, the factor dynamics, and both covariance matrices as known, not as themselves estimated with uncertainty from 41 quarterly observations. There's no parameter-uncertainty propagation — no parametric bootstrap refitting on resampled data, no Bayesian posterior over parameters — so the bands understate total forecast uncertainty, increasingly so at longer horizons where estimation error compounds on top of the innovation noise the bands do capture. And empirical coverage has only actually been checked against realized outcomes through horizon 4; the horizon 5-7 bands are produced by the identical simulation machinery but are, as of this snapshot, unvalidated.
 
-Estimating on the complete sample (Q1 2016 – Q3 2025), the model selects $k_1 = 1$ and $k_2 = 4$. The row loading vector $R$ reveals that Geneva, Ticino, and Basel-Stadt load most heavily on the common factor, consistent with their status as high-cost cantons. The column loadings $C$ distinguish hospital care (both inpatient and outpatient) from ambulatory physician services, pharmacy/medication expenditures, and long-term care services.
+**The levels specification (S2) is a documented dead end, not a footnote.** I keep it in the codebase specifically because a stationary model fit directly on trending levels is a natural first thing to try, and it's useful to have a citable, validated record of why it doesn't work here rather than a private note that it "didn't seem to help."
 
-The MAR coefficient matrices $A$ and $B$ imply stable dynamics: the maximum eigenvalue of the companion matrix is 0.87, well inside the unit circle. This rules out explosive behaviour in long-horizon forecasts.
+More narrowly: the model assumes the factor structure itself is stable, so a genuine structural break — a new billing category, a major regulatory change — would need to be re-validated rather than assumed away. And the forecasts are unconditional: they don't take a stance on cost-containment policy, demographic shifts, or technology adoption, only on the historical dynamics of the panel itself.
 
-### 4.3 Forecasts through 2026
+## What's next
 
-Using the full-sample estimates, I generate forecasts for four quarters ahead (Q4 2025 through Q3 2026). Table 3 reports annualised per-insured costs for selected cantons:
+A few extensions are scoped but not yet built. Population-weighted normalization at the canton level (rather than only in the Switzerland-wide aggregate) is a natural refinement. Wiring in the health-personnel-density series already prepared alongside the cost panel, as an exogenous covariate rather than leaving it unused, is next after that. Further out: tensor-aware imputation (Cen & Lam 2025) for forecasting ahead of a fully-published cross-section, and an alternative prediction-interval construction (Barigozzi & Hallin 2019) as a check on the simulated bands above. There's also an open modeling question about which long-run mean the year-on-year specification should revert to — the full year-on-year sample (2017-2026) averages about +3.7%/year, while the most recent three years alone run closer to +4.7%/year — worth validating as its own specification variant rather than swapping in silently.
 
-| Canton | 2025 (observed) | 2026 (forecast) | YoY Growth (%) |
-|--------|-----------------|-----------------|----------------|
-| ZH     | 4,740           | 4,980           | 5.1            |
-| BE     | 4,880           | 5,290           | 8.4            |
-| GE     | 5,780           | 6,270           | 8.5            |
-| TI     | 5,770           | 6,250           | 8.3            |
-| AI     | 3,580           | 3,720           | 3.9            |
-| UR     | 3,780           | 4,390           | 16.1           |
-| NW     | 4,020           | 4,750           | 18.2           |
+## Conclusion
 
-*Note: All figures in CHF per insured per year. 2026 forecast is annualised from Q4 2025–Q3 2026.*
-
-The year-on-year growth rates for 2026—ranging from 4% to 18% across cantons—are higher than the historical average of 2–3% but consistent with the post-2021 acceleration. The model projects the strongest growth in smaller central Swiss cantons (Uri, Nidwalden, Obwalden), while Appenzell Innerrhoden and Zurich show more moderate increases.
-
-These projections should be interpreted cautiously: the confidence intervals (not yet implemented) would likely be wide, particularly for small cantons where idiosyncratic variation dominates.
-
----
-
-## 5. Discussion
-
-### 5.1 Interpretation of factors
-
-The single row factor captures a Swiss-wide cost trend common to all cantons but with heterogeneous loadings. High-cost cantons (Geneva, Basel-Stadt, Ticino) load more strongly, implying that aggregate shocks—whether policy changes, epidemiological events, or technological diffusion—affect them disproportionately. This is consistent with the observation that cost containment measures often have larger absolute effects in already-expensive regions.
-
-The four column factors admit an economic interpretation. The first distinguishes hospital-based care from ambulatory care; the second separates medication-related costs (pharmacies, Médicaments) from direct service provision; the third captures the distinct dynamics of long-term care (SPITEX, nursing homes); the fourth isolates laboratory and diagnostic services. This structure is not imposed a priori but emerges from the data.
-
-### 5.2 Policy implications
-
-The forecasts suggest that the recent acceleration in health costs is not transitory. If the projections materialise, premiums will need to rise substantially in 2027 to maintain insurer solvency. For cantons with above-average growth (Uri, Nidwalden, Obwalden), premium increases could approach or exceed 10%.
-
-Whether policy intervention can alter this trajectory is beyond the scope of a forecasting exercise. What the model does provide is a baseline against which the effects of reforms—reference pricing, ambulatory tariff revisions, hospital planning—can eventually be assessed.
-
-### 5.3 Limitations
-
-Several caveats apply. First, the model assumes that the factor structure is stable over time; structural breaks (such as the 2022 introduction of separate psychotherapy billing) may violate this assumption. Second, the Gaussian likelihood underlying the EM algorithm may be misspecified for cost data, which are bounded below and potentially skewed. Third, uncertainty quantification is incomplete: the current implementation provides point forecasts only, and bootstrap or Bayesian intervals would strengthen the analysis.
-
-Finally, the forecasts are unconditional. They do not incorporate exogenous information on demographics, technology adoption, or policy changes. Extending the model to include covariates is a natural direction for future work.
-
----
-
-## 6. Conclusion
-
-This paper applies the Dynamic Matrix Factor Model of Barigozzi & Trapin (2025) to Swiss mandatory health insurance cost data. The model achieves an out-of-sample MAPE of 8.3% across 15 validation windows, with negligible bias. Forecasts through 2026 project continued cost growth of 6–9% annually, with substantial heterogeneity across cantons.
-
-The DMFM offers a principled approach to high-dimensional panel forecasting that balances parsimony against flexibility. For Swiss health policy, the value lies in providing granular, interpretable projections that can inform premium regulation and cantonal budgeting. The methodology is implemented in the open-source Python package [KPOKPCH](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH), with replication code available in the repository.
-
----
+The Dynamic Matrix Factor Model gives a principled way to forecast a genuinely two-dimensional panel — cantons and cost categories — without collapsing either dimension away. Applied to Swiss OKP costs, it beats both a status-quo and a naive-trend benchmark significantly through six quarters of rolling-origin validation, currently points to +2.2% cost growth for 2026, and comes with an honest account of where its intervals are and aren't validated, plus at least one negative result (COVID shock modeling) reported because it's useful, not because it's flattering. Code, data, and the full test suite are at [Kostenprognose-OKPCH](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH); the [quarterly update series](/news) is where the forecast gets re-scored as new data arrives.
 
 ## References
 
-Barigozzi, M. & Trapin, L. (2025). Estimation and inference for large approximate dynamic matrix factor models. *Working paper*, [arXiv:2502.04112](https://arxiv.org/abs/2502.04112).
+Barigozzi, M. & Trapin, L. (2025). Dynamic Matrix Factor Models. [arXiv:2502.04112](https://arxiv.org/abs/2502.04112)
 
-Cen, Z. & Lam, C. (2025). Tensor time series imputation through tensor factor modelling. *Journal of Econometrics*, 249, 105974.
+Barigozzi, M. & Hallin, M. (2019). Generalized dynamic factor models and volatilities: consistency, rates, and prediction intervals. *Journal of Econometrics*, 216, 4-34. [arXiv:1811.10045](https://arxiv.org/abs/1811.10045)
 
-Chen, E. Y. & Fan, J. (2023). Statistical inference for high-dimensional matrix-variate factor models. *Journal of the American Statistical Association*, forthcoming.
+Cen, Z. & Lam, C. (2025). Tensor time series imputation through tensor factor modelling. *Journal of Econometrics*. [arXiv:2403.13153](https://arxiv.org/abs/2403.13153)
 
-Federal Statistical Office (2024). *Monitoring der Krankenversicherungs-Kostenentwicklung*. Neuchâtel: BFS.
-
-Yu, L., He, Y., Kong, X. & Zhang, X. (2022). Projected estimation for large-dimensional matrix factor models. *Journal of Econometrics*, 229(1), 201–217.
+Yu, L., He, Y., Kong, X. & Zhang, X. (2022). Projected estimation for large-dimensional matrix factor models. *Journal of Econometrics*, 229(1), 201-217. [arXiv:2003.10285](https://arxiv.org/abs/2003.10285)
 
 ---
 
-*Code and data: [github.com/Radzuweit-Analyse/Kostenprognose-OKPCH](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH)*
-*Last updated: January 2025*
+*Code and data: [github.com/Radzuweit-Analyse/Kostenprognose-OKPCH](https://github.com/Radzuweit-Analyse/Kostenprognose-OKPCH). Data: Federal Office of Public Health (BAG/OFSP) OKP cost-monitoring dashboard, via [opendata.swiss](https://opendata.swiss/).*
